@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS AUTO EXPO LLC | Auto Como Ledger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
+        .navy-bg { background-color: #001F3F; }
+        .navy-text { color: #001F3F; }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .container-box { border: none !important; box-shadow: none !important; margin: 0 !important; max-width: 100% !important; }
+            input, select { border: none !important; background: transparent !important; appearance: none; }
+        }
+
+        .status-paid { background-color: #dcfce7; color: #15803d; font-weight: 900; }
+        .status-unpaid { background-color: #fee2e2; color: #b91c1c; font-weight: 900; }
+        
+        input { background: transparent; outline: none; width: 100%; }
+        input::placeholder { color: #cbd5e1; font-weight: 400; font-size: 0.8rem; }
+    </style>
+</head>
+<body class="p-2 md:p-8">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-2xl rounded-[2rem] overflow-hidden border border-slate-200 container-box">
+        
+        <!-- HEADER SECTION -->
+        <div class="p-8 md:p-12 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start gap-8">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <!-- LOGO CONTAINER -->
+                <div class="relative group">
+                    <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 w-32 h-32 flex items-center justify-center overflow-hidden">
+                        <img id="logoPreview" src="" alt="Logo" class="hidden w-full h-full object-contain">
+                        <div id="logoPlaceholder" class="text-center p-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Click to<br>Add Logo</span>
+                        </div>
+                    </div>
+                    <input type="file" id="logoUpload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer no-print" onchange="handleLogo(this)">
+                </div>
+                
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl font-black navy-text tracking-tighter uppercase">RS AUTO EXPO LLC</h1>
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">8180 Regent Parkway, Suite 118, Fort Mill, SC 29715</p>
+                    <p class="text-blue-600 text-sm font-bold mt-1">Rsautoexpo25@gmail.com | +1 407 300 8164</p>
+                </div>
+            </div>
+            
+            <!-- CUSTOMER INFO -->
+            <div class="bg-blue-50/50 p-8 rounded-[1.5rem] border-l-[6px] border-[#001F3F] w-full md:w-96">
+                <p class="font-black text-slate-900 text-2xl uppercase mb-1">AUTO COMO</p>
+                <p class="text-slate-600 text-xs font-bold uppercase">ZONE PORTUAIRE, Rue, Lome, Togo</p>
+                <p class="text-slate-700 text-sm font-bold mt-2">0022893627535</p>
+                <p class="text-slate-500 text-xs font-medium italic mt-1">marwan.nassar16@gmail.com</p>
+            </div>
+        </div>
+
+        <!-- BANK DETAILS SECTION -->
+        <div class="px-12 py-6 bg-slate-50 border-b border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3">Wire Transfer Instructions</h4>
+                <div class="grid grid-cols-2 gap-y-2 text-xs">
+                    <span class="text-slate-400 font-bold uppercase">Account Name:</span> <span class="font-bold text-slate-800">RS AUTO EXPO LLC</span>
+                    <span class="text-slate-400 font-bold uppercase">Bank Name:</span> <span class="font-bold text-slate-800">TD BANK- U.S.A</span>
+                    <span class="text-slate-400 font-bold uppercase">Bank Address:</span> <span class="font-bold text-slate-800 text-[10px]">100 STONE VILLAGE, FORT MILL, SC, 29708</span>
+                </div>
+            </div>
+            <div class="md:border-l md:pl-8 border-slate-200">
+                <div class="grid grid-cols-2 gap-y-2 mt-6 text-xs">
+                    <span class="text-slate-400 font-bold uppercase">Account Number:</span> <span class="font-black text-slate-900 tracking-wider">4448347884</span>
+                    <span class="text-slate-400 font-bold uppercase">Routing Number:</span> <span class="font-black text-slate-900 tracking-wider">053902197</span>
+                    <span class="text-slate-400 font-bold uppercase">Swift Code:</span> <span class="font-black text-slate-900 tracking-wider">NRTHUS33XXX</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY DASHBOARD -->
+        <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-3 gap-6 border-b border-slate-100">
+            <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Unpaid Inventory</p>
+                <p id="totalInv" class="text-4xl font-black text-slate-900">$0.00</p>
+            </div>
+            <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Wires Received</p>
+                <p id="totalWire" class="text-4xl font-black text-blue-600">$0.00</p>
+            </div>
+            <div class="navy-bg p-8 rounded-3xl shadow-xl transform md:scale-105 transition-all">
+                <p class="text-[10px] font-black text-blue-300 uppercase tracking-widest mb-1">Balance Due</p>
+                <p id="totalBal" class="text-4xl font-black text-white">$0.00</p>
+            </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="px-8 py-4 bg-white border-b flex flex-wrap items-center gap-3 no-print">
+            <button onclick="addRow('cars')" class="bg-[#001F3F] text-white px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-900 shadow-lg">+ Add Vehicle</button>
+            <button onclick="addRow('wires')" class="bg-blue-600 text-white px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 shadow-lg">+ Add Wire</button>
+            <div class="flex-grow"></div>
+            <button onclick="downloadBackup()" class="bg-slate-100 text-slate-600 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-200">💾 Save Backup</button>
+            <button onclick="window.print()" class="bg-[#001F3F] text-white px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:opacity-90 shadow-lg">Print / Save PDF</button>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="p-8 md:p-12 space-y-16">
+            
+            <!-- VEHICLE TABLE -->
+            <section>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="h-8 w-1 navy-bg rounded-full"></div>
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-[0.3em]">Board A: Vehicle Inventory</h3>
+                </div>
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/50">
+                                <th class="p-4 pl-6 w-24">Year</th>
+                                <th class="p-4">Make / Model</th>
+                                <th class="p-4">VIN</th>
+                                <th class="p-4 w-36">Price ($)</th>
+                                <th class="p-4 w-32">Status</th>
+                                <th class="p-4 w-40 text-right pr-6">Remaining</th>
+                                <th class="p-4 w-10 no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="carTable" class="divide-y divide-slate-50"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- WIRE TABLE -->
+            <section class="max-w-4xl">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="h-8 w-1 bg-blue-500 rounded-full"></div>
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-[0.3em]">Board B: Wire Transfers</h3>
+                </div>
+                <div class="overflow-x-auto rounded-2xl border border-slate-100 shadow-sm">
+                    <table class="w-full text-left">
+                        <thead class="bg-blue-50 text-[10px] font-black text-blue-700 uppercase tracking-widest">
+                            <tr>
+                                <th class="p-5 pl-6">Date</th>
+                                <th class="p-5">Reference / Notes</th>
+                                <th class="p-5 w-48 text-right pr-6">Amount ($)</th>
+                                <th class="p-5 w-10 no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="wireTable" class="divide-y divide-slate-50"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="p-8 bg-slate-50 text-center border-t border-slate-100">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">RS AUTO EXPO LLC</p>
+        </div>
+    </div>
+
+    <script>
+        let state = JSON.parse(localStorage.getItem('rs_autoexpo_final_v3')) || {
+            cars: [{ year: '', model: '', vin: '', price: 0, status: 'UNPAID' }],
+            wires: [{ date: '', ref: 'Wire Transfer', amount: 0 }],
+            logo: null
+        };
+
+        function save() {
+            localStorage.setItem('rs_autoexpo_final_v3', JSON.stringify(state));
+            render();
+        }
+
+        function handleLogo(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    state.logo = e.target.result;
+                    save();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function addRow(type) {
+            if (type === 'cars') state.cars.push({ year: '', model: '', vin: '', price: 0, status: 'UNPAID' });
+            else state.wires.push({ date: '', ref: 'Wire Transfer', amount: 0 });
+            save();
+        }
+
+        function update(type, index, key, val) {
+            state[type][index][key] = (key === 'price' || key === 'amount') ? parseFloat(val) || 0 : val;
+            save();
+        }
+
+        function remove(type, index) {
+            if(confirm('Delete entry?')) {
+                state[type].splice(index, 1);
+                save();
+            }
+        }
+
+        function downloadBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", "RS_AUTO_EXPO_Ledger_Backup.json");
+            dl.click();
+        }
+
+        function render() {
+            const cur = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+            
+            const img = document.getElementById('logoPreview');
+            const placeholder = document.getElementById('logoPlaceholder');
+            if(state.logo) {
+                img.src = state.logo;
+                img.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            }
+
+            const cBody = document.getElementById('carTable');
+            const wBody = document.getElementById('wireTable');
+            cBody.innerHTML = ''; wBody.innerHTML = '';
+            
+            let invTotal = 0; let wireTotal = 0;
+
+            state.cars.forEach((c, i) => {
+                const rem = c.status === 'PAID' ? 0 : (c.price || 0);
+                invTotal += rem;
+                cBody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4 pl-6"><input type="text" value="${c.year || ''}" oninput="update('cars',${i},'year',this.value)" placeholder="2024" class="font-bold text-slate-700"></td>
+                        <td class="p-4"><input type="text" value="${c.model || ''}" oninput="update('cars',${i},'model',this.value)" placeholder="Make / Model" class="font-bold text-slate-700"></td>
+                        <td class="p-4"><input type="text" value="${c.vin || ''}" oninput="update('cars',${i},'vin',this.value)" placeholder="VIN #" class="font-medium text-slate-500 uppercase text-xs"></td>
+                        <td class="p-4"><input type="number" value="${c.price || 0}" oninput="update('cars',${i},'price',this.value)" class="font-black text-slate-900"></td>
+                        <td class="p-4">
+                            <select onchange="update('cars',${i},'status',this.value)" class="text-[10px] font-black p-2 rounded-lg outline-none cursor-pointer ${c.status === 'PAID' ? 'status-paid' : 'status-unpaid'}">
+                                <option value="UNPAID" ${c.status === 'UNPAID' ? 'selected' : ''}>UNPAID</option>
+                                <option value="PAID" ${c.status === 'PAID' ? 'selected' : ''}>PAID</option>
+                            </select>
+                        </td>
+                        <td class="p-4 text-right pr-6 font-black text-xl text-slate-900">${cur.format(rem)}</td>
+                        <td class="p-4 no-print text-center"><button onclick="remove('cars',${i})" class="text-slate-300 hover:text-red-500">✕</button></td>
+                    </tr>
+                `;
+            });
+
+            state.wires.forEach((w, i) => {
+                wireTotal += (w.amount || 0);
+                wBody.innerHTML += `
+                    <tr class="hover:bg-blue-50/50 transition-colors">
+                        <td class="p-5 pl-6"><input type="date" value="${w.date || ''}" oninput="update('wires',${i},'date',this.value)" class="text-xs font-bold text-slate-500"></td>
+                        <td class="p-5"><input type="text" value="${w.ref || ''}" oninput="update('wires',${i},'ref',this.value)" placeholder="Reference" class="font-medium text-slate-700"></td>
+                        <td class="p-5 text-right pr-6 font-black text-blue-600 text-xl">${cur.format(w.amount || 0)}</td>
+                        <td class="p-5 no-print text-center"><button onclick="remove('wires',${i})" class="text-slate-300 hover:text-red-500">✕</button></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalInv').innerText = cur.format(invTotal);
+            document.getElementById('totalWire').innerText = cur.format(wireTotal);
+            document.getElementById('totalBal').innerText = cur.format(invTotal - wireTotal);
+        }
+        render();
+    </script>
+</body>
+</html>
